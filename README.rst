@@ -11,6 +11,7 @@ Currently there is an external dependency called `purifycss <https://github.com/
 Installation
 ------------
 * Clone project
+* Install `purifycss <https://github.com/purifycss/purifycss>`_ via npm.
 * Override the ``AMP_CHECK`` variable in your settings to determine whether the current request is a AMP request or not.
 * Add the ``{% amp_compress %}`` template tag to the <head> section in your base template. It takes care of your css.
 * Surround your base template with the ``{% amplify %}`` template tag. It takes care of your images.
