@@ -60,7 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'example.middleware.ExampleAmpMiddleware'
+    'amp_tools.middleware.AmpCssMiddleware'
 ]
 
 ROOT_URLCONF = 'example.urls'
@@ -136,6 +136,6 @@ STATIC_URL = '/static/'
 
 # amp tags settings
 
-AMP_SITE_MODE = AMP_SITE_ID_MODE
-
 COMPRESS_ENABLED = True
+AMP_CHECK = (lambda request: request.GET.get('amp_on') == '1')
+

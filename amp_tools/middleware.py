@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
 import tempfile
-from subprocess import call, check_output
+from inspect import isfunction
+from subprocess import check_output
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
@@ -12,21 +13,12 @@ class AmpCssMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
 
-        if settings.AMP_SITE_MODE is None:
-            raise ImproperlyConfigured('AMP_SITE_MODE is not set!')
-        if settings.AMP_SITE_MODE not in settings.AMP_SITE_MODES:
-            raise ValueError('AMP_SITE_MODE is set to unknown value!')
+        if settings.AMP_CHECK is None:
+            raise ImproperlyConfigured('AMP_CHECK function is not set!')
+        if not isfunction(settings.AMP_CHECK):
+            raise ImproperlyConfigured('AMP_CHECK must be a function')
 
-        if settings.AMP_SITE_MODE == settings.AMP_SITE_ID_MODE:
-            self.site_id_validation(request)
-        elif settings.AMP_SITE_MODE == settings.AMP_SUBDOMAIN_MODE:
-            self.subdomain_validation(request)
-
-    def site_id_validation(self, request):
-        return NotImplemented()
-
-    def subdomain_validation(self, request):
-        return NotImplemented()
+        request.is_amp = settings.AMP_CHECK(request)
 
     def process_template_response(self, request, response):
         # check if is_amp request
